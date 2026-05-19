@@ -31,4 +31,3 @@ serviceAccount:
   annotations: {}
   # -- ServiceAccount name to use. If empty and create is true, a name is generated using the fullname template.
   name: "spark"
-
