@@ -6,7 +6,7 @@
   <img src="https://okdp.io/logos/okdp-notext.svg" height="20px" style="margin: 0 2px;" />
 </a>
 
-`helm-charts-miscellaneous` contains standalone Helm charts used by OKDP for platform support, local development, bootstrap configuration, and small Kubernetes integration tasks.
+`helm-charts-utilities` contains standalone Helm charts used by OKDP for platform support, local development, bootstrap configuration, and small Kubernetes integration tasks.
 
 ## Charts
 
