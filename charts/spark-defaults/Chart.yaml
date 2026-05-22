@@ -34,4 +34,4 @@ maintainers:
 name: spark-defaults
 sources:
   - https://github.com/OKDP/okdp-sandbox
-version: 1.0.0
+version: 1.0.1
