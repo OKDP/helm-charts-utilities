@@ -16,7 +16,7 @@
 
 apiVersion: v2
 name: coredns-patch
-version: 0.1.0
+version: 0.1.1
 description: CoreDNS configuration patch for local domain resolution
 type: application
 home: https://okdp.io/
