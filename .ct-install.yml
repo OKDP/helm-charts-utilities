@@ -1,0 +1,10 @@
+lint-conf: .lintconf.yaml
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+excluded-charts:
+  - cnpg-postgresql
+  - polaris-admin
+validate-maintainers: false
+debug: false

@@ -1,0 +1,86 @@
+{{/*
+
+ Copyright 2026 The OKDP Authors.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+*/}}
+
+🔐 cert-issuers Chart v{{ .Chart.Version }} has been deployed!
+
+{{- if .Values.caClusterIssuers }}
+
+📜 CA-based ClusterIssuers created:
+{{- range .Values.caClusterIssuers }}
+  • {{ .name }}
+    - ClusterIssuer: {{ .name }}
+    {{- if .ca_key }}
+    - Secret with CA cert and key: {{ .name }}
+    {{- end }}
+    {{- if .ca_crt }}
+    - Public CA secret: {{ .name }}-ca
+    {{- end }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.selfSignedClusterIssuers }}
+
+🔐 Self-signed ClusterIssuers created:
+{{- range .Values.selfSignedClusterIssuers }}
+  • {{ .name }}
+    - Bootstrap ClusterIssuer: {{ .name }}-self
+    - CA Certificate: {{ .name }}
+    - Final ClusterIssuer: {{ .name }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.bundle.enabled }}
+
+📦 Trust Bundle configuration:
+  • Bundle name: {{ .Values.bundle.name }}
+  {{- if .Values.bundle.target.configMap.enabled }}
+  • ConfigMap target: {{ .Values.bundle.name }} (key: {{ .Values.bundle.target.configMap.key }})
+  {{- end }}
+  {{- if .Values.bundle.target.secret.enabled }}
+  • Secret target: {{ .Values.bundle.name }} (key: {{ .Values.bundle.target.secret.key }})
+  {{- end }}
+{{- end }}
+
+🔍 To verify your ClusterIssuers:
+  kubectl get clusterissuers
+
+📋 To check certificate status:
+  kubectl get certificates -n {{ include "cert-issuers.certificateNamespace" . }}
+
+{{- if .Values.replication.enabled }}
+
+🔄 Certificate replication is enabled using {{ .Values.replication.method }}
+   Certificates will be replicated to namespaces matching: {{ .Values.replication.allowedNamespaces }}
+{{- end }}
+
+📚 For more information on using cert-manager:
+  https://cert-manager.io/docs/
+
+⚠️  Security Note:
+{{- if .Values.caClusterIssuers }}
+{{- $hasPrivateKeys := false }}
+{{- range .Values.caClusterIssuers }}
+{{- if .ca_key }}
+{{- $hasPrivateKeys = true }}
+{{- end }}
+{{- end }}
+{{- if $hasPrivateKeys }}
+  Private keys are stored in this configuration. Consider using external secret management
+  for production environments.
+{{- end }}
+{{- end }} 
