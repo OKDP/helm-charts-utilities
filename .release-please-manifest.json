@@ -1,5 +1,5 @@
 {
-  "charts/cert-issuers": "0.2.0",
+  "charts/cert-issuers": "0.2.1",
   "charts/cnpg-postgresql": "0.1.0",
   "charts/coredns-patch": "0.1.0",
   "charts/dns-server": "1.0.0",
