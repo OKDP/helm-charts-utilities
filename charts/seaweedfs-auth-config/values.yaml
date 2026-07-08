@@ -136,14 +136,24 @@ s3Config:
   secretName: ""
 
   # -- S3 identities rendered into a SeaweedFS-compatible secret (existingConfigSecret)
+  # Each identity provides its credentials in ONE of two ways:
+  #   1. credentialsSecret — reference an existing Secret; values are looked up at render time
+  #      (consumer identities whose creds are provisioned elsewhere).
+  #   2. credentials — inline access/secret key values (a backend-owned identity such as the
+  #      SeaweedFS admin, whose creds are not stored in a separate Secret).
   # Example:
   # identities:
-  #   - name: polaris
+  #   - name: polaris                 # (1) reference an existing Secret
   #     credentialsSecret:
   #       name: creds-polaris-s3
   #       accessKeyKey: accessKey
   #       secretKeyKey: secretKey
   #     actions: ["Admin","Read","Write","List","Tagging"]
+  #   - name: seaweedfs               # (2) inline credentials
+  #     credentials:
+  #       accessKey: "my-admin-access-key"
+  #       secretKey: "my-admin-secret-key"
+  #     actions: ["Admin"]
   identities: []
 
   # -- Extra annotations to add to the generated S3 config Secret.
