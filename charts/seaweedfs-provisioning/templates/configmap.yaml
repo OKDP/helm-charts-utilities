@@ -1,0 +1,69 @@
+{{/*
+
+ Copyright 2026 The OKDP Authors.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+*/}}
+
+{{- $buckets := (include "seaweedfs-provisioning.bucketsWithPaths" . | fromJsonArray) -}}
+{{- if $buckets -}}
+{{- $endpoint := required "endpoint is required when buckets declare paths" .Values.endpoint -}}
+{{- $marker := .Values.markerObject | default ".keep" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "seaweedfs-provisioning.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "seaweedfs-provisioning.labels" . | nindent 4 }}
+data:
+  provision.sh: |
+    #!/bin/sh
+    set -eu
+
+    deadline=$(( $(date +%s) + {{ .Values.job.waitTimeoutSeconds | int }} ))
+
+    wait_for() {
+      # $1: human readable description, remaining args: command to poll
+      description="$1"
+      shift
+      echo ">> waiting for ${description} ..."
+      until "$@" >/dev/null 2>&1; do
+        if [ "$(date +%s)" -ge "$deadline" ]; then
+          echo "!! timed out waiting for ${description}"
+          exit 1
+        fi
+        sleep 3
+      done
+    }
+
+    # The S3 gateway and the buckets are owned by the SeaweedFS chart, which may still
+    # be converging when this job starts, hence the polling rather than a hard failure.
+    wait_for "the S3 endpoint at {{ $endpoint }}" mc alias set sw "{{ $endpoint }}" "$ACCESS_KEY" "$SECRET_KEY"
+
+    {{- range $b := $buckets }}
+
+    wait_for "bucket {{ $b.name }}" mc ls "sw/{{ $b.name }}"
+    {{- range $p := $b.paths }}
+    if mc stat "sw/{{ $b.name }}/{{ $p }}/{{ $marker }}" >/dev/null 2>&1; then
+      echo "== sw/{{ $b.name }}/{{ $p }}/{{ $marker }} already present"
+    else
+      echo ">> seeding sw/{{ $b.name }}/{{ $p }}/{{ $marker }}"
+      printf '' | mc pipe "sw/{{ $b.name }}/{{ $p }}/{{ $marker }}"
+    fi
+    {{- end }}
+    {{- end }}
+
+    echo ">> provisioning complete"
+{{- end }}
