@@ -75,6 +75,9 @@ jobs:
   helm-charts-publish-ci:
     name: helm-publish-ci
     needs: [helm-charts-lint]
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
