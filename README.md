@@ -18,8 +18,9 @@
 | [`dns-server`](charts/dns-server) | `1.0.0` | Lightweight DNS server for local development |
 | [`local-secrets-provider`](charts/local-secrets-provider) | `0.1.0` | Shared local testing secrets, configuration, services, and environment values |
 | [`polaris-admin`](charts/polaris-admin) | `1.0.0` | Apache Polaris realm, principal, and role bootstrap jobs |
-| [`seaweedfs-auth-config`](charts/seaweedfs-auth-config) | `1.0.0` | SeaweedFS Auth and IAM/STS configuration |
-| [`spark-defaults`](charts/spark-defaults) | `1.0.0` | Spark default properties ConfigMap |
+| [`seaweedfs-auth-config`](charts/seaweedfs-auth-config) | `1.1.0` | SeaweedFS Auth and IAM/STS configuration |
+| [`seaweedfs-provisioning`](charts/seaweedfs-provisioning) | `1.0.0` | Seeds object prefixes inside existing SeaweedFS buckets |
+| [`spark-defaults`](charts/spark-defaults) | `1.0.1` | Spark default properties ConfigMap |
 | [`spark-rbac`](charts/spark-rbac) | `1.0.1` | ServiceAccount, Role, and RoleBinding resources for Spark on Kubernetes |
 
 Each chart has its own `README.md`, `Chart.yaml`, `values.yaml`, and templates under `charts/<chart-name>/`.
