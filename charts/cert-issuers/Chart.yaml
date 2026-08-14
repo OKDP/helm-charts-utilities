@@ -18,7 +18,7 @@ apiVersion: v2
 name: cert-issuers
 description: A Helm chart for managing cert-manager ClusterIssuers and Certificate bundles
 type: application
-version: 0.2.0
+version: 0.2.1
 appVersion: "1.0.0"
 home: https://okdp.io/
 icon: https://okdp.io/logos/okdp-notext.svg
@@ -39,4 +39,4 @@ maintainers:
     name: SergeAlexandre
     url: https://github.com/SergeAlexandre
 annotations:
-  category: Security 
+  category: Security
