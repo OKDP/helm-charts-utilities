@@ -7,6 +7,6 @@
   "charts/polaris-admin": "1.0.0",
   "charts/seaweedfs-auth-config": "1.1.0",
   "charts/seaweedfs-provisioning": "1.0.0",
-  "charts/spark-defaults": "1.0.1",
+  "charts/spark-defaults": "1.0.2",
   "charts/spark-rbac": "1.0.1"
 }
