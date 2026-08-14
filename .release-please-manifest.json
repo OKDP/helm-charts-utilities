@@ -4,7 +4,7 @@
   "charts/coredns-patch": "0.1.0",
   "charts/dns-server": "1.0.0",
   "charts/local-secrets-provider": "0.1.0",
-  "charts/polaris-admin": "1.0.0",
+  "charts/polaris-admin": "1.0.1",
   "charts/seaweedfs-auth-config": "1.1.0",
   "charts/seaweedfs-provisioning": "1.0.0",
   "charts/spark-defaults": "1.0.1",
