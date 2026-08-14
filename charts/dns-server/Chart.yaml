@@ -18,7 +18,7 @@ apiVersion: v2
 name: dns-server
 description: Lightweight DNS server for local development
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: 2.90-r3
 home: https://okdp.io/
 icon: https://okdp.io/logos/okdp-notext.svg
