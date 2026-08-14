@@ -38,4 +38,4 @@ maintainers:
 name: seaweedfs-provisioning
 sources:
   - https://github.com/OKDP/okdp-sandbox
-version: 1.0.0
+version: 1.1.0
