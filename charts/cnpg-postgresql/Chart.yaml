@@ -29,5 +29,5 @@ keywords:
   - database
   - kubernetes
   - okdp
-version: 0.1.0
+version: 0.1.1
 appVersion: "17.4.0"
