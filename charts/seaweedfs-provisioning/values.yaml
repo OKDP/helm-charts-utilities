@@ -54,7 +54,7 @@ markerObject: .keep
 # -- Provisioning job settings.
 job:
   # -- Image providing the `mc` client used to talk to the S3 endpoint.
-  image: minio/mc:latest
+  image: quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z
   # -- Image pull policy for the provisioning job.
   imagePullPolicy: IfNotPresent
   # -- Number of retries before the provisioning job is considered failed.

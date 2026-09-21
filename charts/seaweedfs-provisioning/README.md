@@ -34,10 +34,10 @@ upfront.
 | credentials.secretKey | string | `""` | Inline secret key, stored in a Secret created by this chart. |
 | endpoint | string | `""` | S3 endpoint of the SeaweedFS gateway to provision against. Usually the in-cluster service, e.g. "http://my-seaweedfs-s3.my-namespace:8333". |
 | fullnameOverride | string | `""` | Override the full release name (affects resource naming). |
-| job | object | `{"annotations":{},"backoffLimit":20,"image":"minio/mc:latest","imagePullPolicy":"IfNotPresent","nodeSelector":{},"resources":{},"tolerations":[],"waitTimeoutSeconds":300}` | Provisioning job settings. |
+| job | object | `{"annotations":{},"backoffLimit":20,"image":"quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z","imagePullPolicy":"IfNotPresent","nodeSelector":{},"resources":{},"tolerations":[],"waitTimeoutSeconds":300}` | Provisioning job settings. |
 | job.annotations | object | `{}` | Extra annotations to add to the provisioning job. |
 | job.backoffLimit | int | `20` | Number of retries before the provisioning job is considered failed. |
-| job.image | string | `"minio/mc:latest"` | Image providing the `mc` client used to talk to the S3 endpoint. |
+| job.image | string | `"quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z"` | Image providing the `mc` client used to talk to the S3 endpoint. |
 | job.imagePullPolicy | string | `"IfNotPresent"` | Image pull policy for the provisioning job. |
 | job.nodeSelector | object | `{}` | Node selector for the provisioning job. |
 | job.resources | object | `{}` | Resource requests and limits for the provisioning job. |
