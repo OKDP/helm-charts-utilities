@@ -17,6 +17,7 @@
 | [`coredns-patch`](charts/coredns-patch) | `0.1.0` | CoreDNS configuration patch for local domain resolution |
 | [`dns-server`](charts/dns-server) | `1.0.0` | Lightweight DNS server for local development |
 | [`local-secrets-provider`](charts/local-secrets-provider) | `0.1.0` | Shared local testing secrets, configuration, services, and environment values |
+| [`oidc-dcr-cleanup`](charts/oidc-dcr-cleanup) | `0.1.0` | Unregisters a service's dynamically registered OIDC client on Release uninstall |
 | [`polaris-admin`](charts/polaris-admin) | `1.0.0` | Apache Polaris realm, principal, and role bootstrap jobs |
 | [`seaweedfs-auth-config`](charts/seaweedfs-auth-config) | `1.0.0` | SeaweedFS Auth and IAM/STS configuration |
 | [`spark-defaults`](charts/spark-defaults) | `1.0.0` | Spark default properties ConfigMap |
