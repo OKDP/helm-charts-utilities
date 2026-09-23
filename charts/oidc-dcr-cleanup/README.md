@@ -9,9 +9,9 @@ is uninstalled, and removes the Secret holding its credentials.
 
 ## Maintainers
 
-| Name |  Url |
-| ---- | --- |
-| alex-mabrouk | <https://github.com/alex-mabrouk> |
+| Name | Email | Url |
+| ---- | ------ | --- |
+| alex-mabrouk |  | <https://github.com/alex-mabrouk> |
 
 ## Values
 
