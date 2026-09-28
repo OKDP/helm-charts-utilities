@@ -51,17 +51,19 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: mc
+        - name: provision
           image: {{ .Values.job.image | quote }}
           imagePullPolicy: {{ .Values.job.imagePullPolicy }}
           command: ["/bin/sh", "/scripts/provision.sh"]
           env:
-            - name: ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.region | quote }}
+            - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
                   name: {{ include "seaweedfs-provisioning.credentialsSecretName" . }}
                   key: {{ include "seaweedfs-provisioning.accessKeyKey" . }}
-            - name: SECRET_KEY
+            - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ include "seaweedfs-provisioning.credentialsSecretName" . }}

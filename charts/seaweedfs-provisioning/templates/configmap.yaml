@@ -32,6 +32,13 @@ data:
     #!/bin/sh
     set -eu
 
+    export AWS_EC2_METADATA_DISABLED=true
+    export AWS_PAGER=""
+
+    s3cli() {
+      aws --endpoint-url "{{ $endpoint }}" "$@"
+    }
+
     deadline=$(( $(date +%s) + {{ .Values.job.waitTimeoutSeconds | int }} ))
 
     wait_for() {
@@ -50,17 +57,17 @@ data:
 
     # The S3 gateway and the buckets are owned by the SeaweedFS chart, which may still
     # be converging when this job starts, hence the polling rather than a hard failure.
-    wait_for "the S3 endpoint at {{ $endpoint }}" mc alias set sw "{{ $endpoint }}" "$ACCESS_KEY" "$SECRET_KEY"
+    wait_for "the S3 endpoint at {{ $endpoint }}" s3cli s3 ls
 
     {{- range $b := $buckets }}
 
-    wait_for "bucket {{ $b.name }}" mc ls "sw/{{ $b.name }}"
+    wait_for "bucket {{ $b.name }}" s3cli s3api head-bucket --bucket "{{ $b.name }}"
     {{- range $p := $b.paths }}
-    if mc stat "sw/{{ $b.name }}/{{ $p }}/{{ $marker }}" >/dev/null 2>&1; then
-      echo "== sw/{{ $b.name }}/{{ $p }}/{{ $marker }} already present"
+    if s3cli s3api head-object --bucket "{{ $b.name }}" --key "{{ $p }}/{{ $marker }}" >/dev/null 2>&1; then
+      echo "== s3://{{ $b.name }}/{{ $p }}/{{ $marker }} already present"
     else
-      echo ">> seeding sw/{{ $b.name }}/{{ $p }}/{{ $marker }}"
-      printf '' | mc pipe "sw/{{ $b.name }}/{{ $p }}/{{ $marker }}"
+      echo ">> seeding s3://{{ $b.name }}/{{ $p }}/{{ $marker }}"
+      s3cli s3api put-object --bucket "{{ $b.name }}" --key "{{ $p }}/{{ $marker }}" --content-length 0 >/dev/null
     fi
     {{- end }}
     {{- end }}
