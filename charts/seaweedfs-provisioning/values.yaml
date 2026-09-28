@@ -51,10 +51,14 @@ credentials:
 # -- Name of the marker object created inside each seeded prefix.
 markerObject: .keep
 
+# -- Region sent with every S3 request. SeaweedFS accepts any value, the AWS CLI
+# refuses to run without one.
+region: us-east-1
+
 # -- Provisioning job settings.
 job:
-  # -- Image providing the `mc` client used to talk to the S3 endpoint.
-  image: minio/mc:latest
+  # -- Image providing the AWS CLI used to talk to the S3 endpoint.
+  image: public.ecr.aws/aws-cli/aws-cli:2.37.4
   # -- Image pull policy for the provisioning job.
   imagePullPolicy: IfNotPresent
   # -- Number of retries before the provisioning job is considered failed.
