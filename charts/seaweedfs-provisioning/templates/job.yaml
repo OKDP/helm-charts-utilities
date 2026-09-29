@@ -42,6 +42,9 @@ spec:
         {{- include "seaweedfs-provisioning.selectorLabels" . | nindent 8 }}
     spec:
       restartPolicy: OnFailure
+      {{- if .Values.credentials.webIdentity.roleArn }}
+      serviceAccountName: {{ include "seaweedfs-provisioning.serviceAccountName" . | quote }}
+      {{- end }}
       {{- with .Values.job.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -58,6 +61,16 @@ spec:
           env:
             - name: AWS_DEFAULT_REGION
               value: {{ .Values.region | quote }}
+            {{- if .Values.credentials.webIdentity.roleArn }}
+            - name: AWS_ROLE_ARN
+              value: {{ .Values.credentials.webIdentity.roleArn | quote }}
+            - name: AWS_ROLE_SESSION_NAME
+              value: {{ include "seaweedfs-provisioning.fullname" . | quote }}
+            - name: AWS_WEB_IDENTITY_TOKEN_FILE
+              value: /var/run/secrets/seaweedfs/token
+            - name: AWS_ENDPOINT_URL_STS
+              value: {{ .Values.endpoint | quote }}
+            {{- else }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -68,6 +81,7 @@ spec:
                 secretKeyRef:
                   name: {{ include "seaweedfs-provisioning.credentialsSecretName" . }}
                   key: {{ include "seaweedfs-provisioning.secretKeyKey" . }}
+            {{- end }}
           {{- with .Values.job.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -75,6 +89,11 @@ spec:
           volumeMounts:
             - name: scripts
               mountPath: /scripts
+            {{- if .Values.credentials.webIdentity.roleArn }}
+            - name: web-identity-token
+              mountPath: /var/run/secrets/seaweedfs
+              readOnly: true
+            {{- end }}
       volumes:
         - name: scripts
           configMap:
@@ -82,4 +101,13 @@ spec:
             items:
               - key: provision.sh
                 path: provision.sh
+        {{- if .Values.credentials.webIdentity.roleArn }}
+        - name: web-identity-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: {{ .Values.credentials.webIdentity.audience | quote }}
+                  expirationSeconds: 3600
+                  path: token
+        {{- end }}
 {{- end }}

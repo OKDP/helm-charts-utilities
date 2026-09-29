@@ -25,13 +25,17 @@ upfront.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | buckets | list | `[]` | Buckets whose prefixes must be seeded. Buckets themselves are NOT created here: they are expected to already exist (the SeaweedFS chart creates them). Entries without `paths` are ignored, and when no entry has a path the chart renders nothing. Example: buckets:   - name: spark-events     paths: ["event-logs"] |
-| credentials | object | `{"accessKey":"","existingSecret":{"accessKeyKey":"accessKey","name":"","secretKeyKey":"secretKey"},"secretKey":""}` | Credentials of an identity allowed to write to the buckets above. |
+| credentials | object | `{"accessKey":"","existingSecret":{"accessKeyKey":"accessKey","name":"","secretKeyKey":"secretKey"},"secretKey":"","webIdentity":{"audience":"seaweedfs-provisioning","roleArn":"","serviceAccountName":""}}` | Credentials of an identity allowed to write to the buckets above. |
 | credentials.accessKey | string | `""` | Inline access key, stored in a Secret created by this chart. |
 | credentials.existingSecret | object | `{"accessKeyKey":"accessKey","name":"","secretKeyKey":"secretKey"}` | Reference an existing Secret holding the credentials. Takes precedence over the inline accessKey/secretKey below. |
 | credentials.existingSecret.accessKeyKey | string | `"accessKey"` | Key holding the access key inside the existing Secret. |
 | credentials.existingSecret.name | string | `""` | Name of the existing Secret. Leave empty to use the inline credentials. |
 | credentials.existingSecret.secretKeyKey | string | `"secretKey"` | Key holding the secret key inside the existing Secret. |
 | credentials.secretKey | string | `""` | Inline secret key, stored in a Secret created by this chart. |
+| credentials.webIdentity | object | `{"audience":"seaweedfs-provisioning","roleArn":"","serviceAccountName":""}` | Assume a SeaweedFS IAM role with the pod's projected service account token (STS AssumeRoleWithWebIdentity) instead of static keys. Requires an OIDC provider trusting the cluster issuer in the SeaweedFS IAM config. |
+| credentials.webIdentity.audience | string | `"seaweedfs-provisioning"` | Audience of the projected token, must match the provider clientId. |
+| credentials.webIdentity.roleArn | string | `""` | ARN of the role to assume. Leave empty to use the keys above. |
+| credentials.webIdentity.serviceAccountName | string | `""` | Service account the job runs as, whose `sub` the role trust policy checks. Leave empty to let the chart create one named after the release. |
 | endpoint | string | `""` | S3 endpoint of the SeaweedFS gateway to provision against. Usually the in-cluster service, e.g. "http://my-seaweedfs-s3.my-namespace:8333". |
 | fullnameOverride | string | `""` | Override the full release name (affects resource naming). |
 | job | object | `{"annotations":{},"backoffLimit":20,"image":"public.ecr.aws/aws-cli/aws-cli:2.37.4","imagePullPolicy":"IfNotPresent","nodeSelector":{},"resources":{},"tolerations":[],"waitTimeoutSeconds":300}` | Provisioning job settings. |

@@ -47,6 +47,17 @@ credentials:
   accessKey: ""
   # -- Inline secret key, stored in a Secret created by this chart.
   secretKey: ""
+  # -- Assume a SeaweedFS IAM role with the pod's projected service account token
+  # (STS AssumeRoleWithWebIdentity) instead of static keys. Requires an OIDC
+  # provider trusting the cluster issuer in the SeaweedFS IAM config.
+  webIdentity:
+    # -- ARN of the role to assume. Leave empty to use the keys above.
+    roleArn: ""
+    # -- Audience of the projected token, must match the provider clientId.
+    audience: "seaweedfs-provisioning"
+    # -- Service account the job runs as, whose `sub` the role trust policy checks.
+    # Leave empty to let the chart create one named after the release.
+    serviceAccountName: ""
 
 # -- Name of the marker object created inside each seeded prefix.
 markerObject: .keep

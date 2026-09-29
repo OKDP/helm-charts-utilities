@@ -109,3 +109,11 @@ accessKey
 secretKey
 {{- end -}}
 {{- end -}}
+
+{{/*
+Service account of the provisioning job in web identity mode: the given one,
+or the one this chart creates, named after the release.
+*/}}
+{{- define "seaweedfs-provisioning.serviceAccountName" -}}
+{{- default (include "seaweedfs-provisioning.fullname" .) .Values.credentials.webIdentity.serviceAccountName -}}
+{{- end -}}
