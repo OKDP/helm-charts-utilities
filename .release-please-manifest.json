@@ -1,7 +1,7 @@
 {
   "charts/cert-issuers": "0.2.0",
   "charts/cnpg-postgresql": "0.1.0",
-  "charts/coredns-patch": "0.1.0",
+  "charts/coredns-patch": "0.1.1",
   "charts/dns-server": "1.0.0",
   "charts/local-secrets-provider": "0.1.0",
   "charts/polaris-admin": "1.0.0",
